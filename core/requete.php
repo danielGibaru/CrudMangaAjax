@@ -91,10 +91,10 @@ function getManga($dbh){
     $sql =  'SELECT * FROM manga';
     $i = 1;
     
-    echo '<table class="table table-striped table-dark"><thead><tr><th scope="col">#</th><th scope="col">Nom</th><th scope="col">Mangaka</th><th scope="col">img</th><th scope="col">Supprimer</th><th scope="col">Edit</th></tr></thead><tbody><tr>';
+    echo '<table class="table table-striped table-dark"><thead><tr><th scope="col">#</th><th scope="col">Nom</th><th scope="col">Mangaka</th><th scope="col">img</th><th scope="col">Supprimer</th></tr></thead><tbody><tr>';
 
     foreach  ($dbh->query($sql) as $mangas) {
-        echo '<tr><th scope="row">'.$i.'</th><td>'.$mangas['nom'].'</td><td>'.$mangas['mangaka'].'</td><td><img id="imgManga" src=" img/'.$mangas['img'].'"></td><td><button onClick="deleteManga('.$mangas['id'].')" href ="'.$mangas['id'].'" type="button" class="delete btn btn-danger">X</button></td><td><button type="button" class="edit btn btn-success" href="'.$mangas['id'].'" onClick="editModal()">E</button></td></tr>';
+        echo '<tr><th scope="row">'.$i.'</th><td>'.$mangas['nom'].'</td><td>'.$mangas['mangaka'].'</td><td><img id="imgManga" src=" img/'.$mangas['img'].'"></td><td><button onClick="deleteManga('.$mangas['id'].')" href ="'.$mangas['id'].'" type="button" class="delete btn btn-danger">X</button></td></tr>';
         $i++;
 
   }  
@@ -108,10 +108,10 @@ function getMangaByIDG($dbh, $IDG){
     $result = $sql->fetchAll();
     $i = 1;
 
-    echo '<table class="table table-striped table-dark"><thead><tr><th scope="col">#</th><th scope="col">Nom</th><th scope="col">Mangaka</th><th scope="col">img</th><th scope="col">Supprimer</th><th scope="col">Edit</th></tr></thead><tbody><tr>';
+    echo '<table class="table table-striped table-dark"><thead><tr><th scope="col">#</th><th scope="col">Nom</th><th scope="col">Mangaka</th><th scope="col">img</th><th scope="col">Supprimer</th></tr></thead><tbody><tr>';
 
     foreach  ($result as $mangas) {
-        echo '<tr><th scope="row">'.$i.'</th><td>'.$mangas['nom'].'</td><td>'.$mangas['mangaka'].'</td><td><img id="imgManga" src=" img/'.$mangas['img'].'"></td><td><button onClick="deleteManga('.$mangas['id'].')" href ="'.$mangas['id'].'" type="button" class="delete btn btn-danger">X</button></td><td><button type="button" class="edit btn btn-success" href="'.$mangas['id'].'" onClick="editModal()">E</button></td></tr>';
+        echo '<tr><th scope="row">'.$i.'</th><td>'.$mangas['nom'].'</td><td>'.$mangas['mangaka'].'</td><td><img id="imgManga" src=" img/'.$mangas['img'].'"></td><td><button onClick="deleteManga('.$mangas['id'].')" href ="'.$mangas['id'].'" type="button" class="delete btn btn-danger">X</button></td></tr>';
         $i++;
 
   }  
@@ -171,6 +171,12 @@ function updateManga($dbh, $id, $inputNom, $inputMangaka, $inputImg, $inputIDG){
     
     $req = $dbh->prepare("UPDATE manga SET nom = '".$nom."', mangaka = '".$mangaka."', img = '".$img."', IDG = '".$IDG."' WHERE id =". $id );
     
+    $req->execute(array(
+        "nom" => $nom, 
+        "mangaka" => $mangaka,
+        "img" => $img,
+        "IDG" => $IDG
+    ));
     $data = $req->fetchAll();
 
 }
